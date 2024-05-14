@@ -8,61 +8,61 @@ jobs:
     runs-on: macos-14
     environment: testing
     steps:
-        - name: Select Xcode 15.3
-          run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
-  
-        - name: Print Xcode version
-          run: xcodebuild -version
-      
-        - name: Check out Git repository
-          uses: actions/checkout@v4
-      
-        - name: Set Node.js version
-          uses: actions/setup-node@v4
-          with:
-            node-version: 'latest'
-      
-        - name: Set up Yarn Berry (v4.2.1)
-          run: |
-            export PATH="$HOME/.yarn/bin:$PATH"
-            yarn set version 4.2.1
-            echo "yarnPath: .yarn/releases/yarn-4.2.1.cjs" > .yarnrc.yml
-      
-        - name: Verify Yarn Berry Installation
-          run: |
-            export PATH="$HOME/.yarn/bin:$PATH"
-            yarn -v
-            ls -la .yarn/releases
-      
-        - name: Clean Yarn Cache
-          run: |
-            export PATH="$HOME/.yarn/bin:$PATH"
-            yarn cache clean --all
-            rm -rf $(yarn config get globalFolder)/metadata
-      
-        - name: Cache Yarn
-          uses: actions/cache@v4
-          with:
-            path: |
-              .yarn/cache
-              .yarn/global
-              .yarn/unplugged
-            key: macOS-yarn-${{ hashFiles('**/yarn.lock') }}
-            restore-keys: macOS-yarn-
-      
-        - name: Install Dependencies
-          run: |
-            yarn install
-      
-        - name: Set up ruby env
-          uses: ruby/setup-ruby@v1.172.0
-          with:
-            ruby-version: 3.3.0
-            bundler-cache: true
-      
-        - name: Install Pods
-          run: |
-            cd ios
-            pod repo update
-            pod install
-            cd ..
+      - name: Select Xcode 15.3
+        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+
+      - name: Print Xcode version
+        run: xcodebuild -version
+
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set Node.js version
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+      - name: Set up Yarn Berry (v4.2.1)
+        run: |
+          export PATH="$HOME/.yarn/bin:$PATH"
+          yarn set version 4.2.1
+          echo "yarnPath: .yarn/releases/yarn-4.2.1.cjs" > .yarnrc.yml
+
+      - name: Verify Yarn Berry Installation
+        run: |
+          export PATH="$HOME/.yarn/bin:$PATH"
+          yarn -v
+          ls -la .yarn/releases
+
+      - name: Clean Yarn Cache
+        run: |
+          export PATH="$HOME/.yarn/bin:$PATH"
+          yarn cache clean --all
+          rm -rf $(yarn config get globalFolder)/metadata
+
+      - name: Cache Yarn
+        uses: actions/cache@v4
+        with:
+          path: |
+            .yarn/cache
+            .yarn/global
+            .yarn/unplugged
+          key: macOS-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: macOS-yarn-
+
+      - name: Install Dependencies
+        run: |
+          yarn install --immutable
+
+      - name: Set up ruby env
+        uses: ruby/setup-ruby@v1.172.0
+        with:
+          ruby-version: 3.3.0
+          bundler-cache: true
+
+      - name: Install Pods
+        run: |
+          cd ios
+          pod repo update
+          pod install
+          cd ..
