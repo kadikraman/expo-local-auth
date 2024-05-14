@@ -52,7 +52,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          yarn install --immutable
+          yarn install
 
       - name: Set up ruby env
         uses: ruby/setup-ruby@v1.172.0
