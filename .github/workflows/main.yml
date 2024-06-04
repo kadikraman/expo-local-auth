@@ -22,33 +22,37 @@ jobs:
         with:
           node-version: 'latest'
 
-      - name: Set up Yarn Berry (v4.2.1)
+      - name: Set up Yarn
         run: |
-          export PATH="$HOME/.yarn/bin:$PATH"
-          yarn set version 4.2.1
-          echo "yarnPath: .yarn/releases/yarn-4.2.1.cjs" > .yarnrc.yml
+          npm install -g yarn
 
-      - name: Verify Yarn Berry Installation
-        run: |
-          export PATH="$HOME/.yarn/bin:$PATH"
-          yarn -v
-          ls -la .yarn/releases
+      # - name: Set up Yarn Berry (v4.2.1)
+      #   run: |
+      #     export PATH="$HOME/.yarn/bin:$PATH"
+      #     yarn set version 4.2.1
+      #     echo "yarnPath: .yarn/releases/yarn-4.2.1.cjs" > .yarnrc.yml
 
-      - name: Clean Yarn Cache
-        run: |
-          export PATH="$HOME/.yarn/bin:$PATH"
-          yarn cache clean --all
-          rm -rf $(yarn config get globalFolder)/metadata
+      # - name: Verify Yarn Berry Installation
+      #   run: |
+      #     export PATH="$HOME/.yarn/bin:$PATH"
+      #     yarn -v
+      #     ls -la .yarn/releases
 
-      - name: Cache Yarn
-        uses: actions/cache@v4
-        with:
-          path: |
-            .yarn/cache
-            .yarn/global
-            .yarn/unplugged
-          key: macOS-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: macOS-yarn-
+      # - name: Clean Yarn Cache
+      #   run: |
+      #     export PATH="$HOME/.yarn/bin:$PATH"
+      #     yarn cache clean --all
+      #     rm -rf $(yarn config get globalFolder)/metadata
+
+      # - name: Cache Yarn
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       .yarn/cache
+      #       .yarn/global
+      #       .yarn/unplugged
+      #     key: macOS-yarn-${{ hashFiles('**/yarn.lock') }}
+      #     restore-keys: macOS-yarn-
 
       - name: Install Dependencies
         run: |
